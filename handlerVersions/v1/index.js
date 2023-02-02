@@ -1,12 +1,44 @@
+const { MongoClient } = require("mongodb");
+
+// Connection URL
+const url = "mongodb://localhost:27017";
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = "myProject";
+
+var db;
+var collection;
+
+async function main() {
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log("Connected successfully to server");
+  db = client.db(dbName);
+  collection = db.collection("documents");
+
+  // the following code examples can be pasted here...
+
+  return "done.";
+}
+
+// main()
+//   .then(console.log)
+//   .catch(console.error)
+//   .finally(() => client.close());
+
 function parseTokenString(tokenString) {
   const [amountString, symbol] = tokenString.split(" ");
   const amount = parseFloat(amountString);
   return { amount, symbol };
 }
 
-function updateTransferData(state, payload, blockInfo, context) {
+async function updateTransferData(state, payload, blockInfo, context) {
+  await main();
   console.log("Data from payload", payload.data);
-  console.log(" payload", {payload});
+
+  await collection.insertOne({ data: payload.data });
+  await client.close();
   const { amount, symbol } = parseTokenString(payload.data.quantity);
   if (!state.volumeBySymbol[symbol]) {
     state.volumeBySymbol[symbol] = amount;
