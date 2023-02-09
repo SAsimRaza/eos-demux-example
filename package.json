@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "demux": "^4.0.0",
+    "demux-ala": "^4.0.2",
     "demux-eos": "^4.0.1"
   }
 }

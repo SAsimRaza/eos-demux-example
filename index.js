@@ -1,16 +1,21 @@
 const { BaseActionWatcher } = require("demux");
-const { NodeosActionReader } = require("demux-eos");
+const { AlanodeActionReader } = require("demux-ala");
+// const { NodeosActionReader } = require("demux-eos");
 const ObjectActionHandler = require("./ObjectActionHandler");
 const handlerVersion = require("./handlerVersions/v1");
 
 const actionHandler = new ObjectActionHandler([handlerVersion]);
 
-const actionReader = new NodeosActionReader({
-  startAtBlock: 1,
+console.log("Index is running");
+
+const actionReader = new AlanodeActionReader({
+  startAtBlock: 5000,
   onlyIrreversible: false,
-  nodeosEndpoint: "http://127.0.0.1:8888",
+  nodeosEndpoint: "https://hypertestapi.alacritys.net",
 });
-// https://eos.greymass.com
+
+// http://34.204.67.213:8888 => Alacrity Network use by Xord
+// Use this network, must replace "infratoken" with "alaio.token"
 
 const actionWatcher = new BaseActionWatcher(actionReader, actionHandler, 5);
 

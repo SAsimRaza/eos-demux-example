@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-
+console.log("Logics is running");
 // Connection URL
 const url = "mongodb://localhost:27017";
 const client = new MongoClient(url);
@@ -34,11 +34,11 @@ function parseTokenString(tokenString) {
 }
 
 async function updateTransferData(state, payload, blockInfo, context) {
-  await main();
+  // await main();
   console.log("Data from payload", payload.data);
 
-  await collection.insertOne({ data: payload.data });
-  await client.close();
+  // await collection.insertOne({ data: payload.data });
+  // await client.close();
   const { amount, symbol } = parseTokenString(payload.data.quantity);
   if (!state.volumeBySymbol[symbol]) {
     state.volumeBySymbol[symbol] = amount;
@@ -51,7 +51,7 @@ async function updateTransferData(state, payload, blockInfo, context) {
 
 const updaters = [
   {
-    actionType: "eosio.token::transfer",
+    actionType: "infratoken::transfer",
     apply: updateTransferData,
   },
 ];
@@ -62,7 +62,7 @@ function logUpdate(payload, blockInfo, context) {
 
 const effects = [
   {
-    actionType: "eosio.token::transfer",
+    actionType: "infratoken::transfer",
     run: logUpdate,
   },
 ];
